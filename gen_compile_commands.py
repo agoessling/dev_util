@@ -8,6 +8,7 @@ import subprocess
 import typing
 
 import bazel_util
+import dev_util
 import git_util
 
 
@@ -76,12 +77,18 @@ def main():
 
   args = parser.parse_args()
 
-  targets = None
-  if not args.targets is None:
-    targets = json.loads(args.targets)
+  if args.targets is not None:
+    args.targets = json.loads(args.targets)
+
+  # Only add arguments from config file that aren't specified on the command line.
+  config = dev_util.find_config(args.dir)
+  if config is not None and 'compile_commands' in config:
+    for k, v in config['compile_commands'].items():
+      if k not in args.__dict__ or args.__dict__[k] is None:
+        args.__dict__[k] = v
 
   with temp_append_to_file(bazel_util.workspace_file(args.dir), get_workspace_dep()), \
-       temp_append_to_file(bazel_util.root_build_file(args.dir), get_build_target(targets)), \
+       temp_append_to_file(bazel_util.root_build_file(args.dir), get_build_target(args.targets)), \
        temp_append_to_file(git_util.ignore_file(args.dir), ''):
     subprocess.run(['bazel', 'run', ':refresh_compile_commands'], cwd=args.dir, check=True)
 

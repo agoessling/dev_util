@@ -59,7 +59,7 @@ def root_build_file(cwd: typing.Optional[str] = None) -> str:
   Returns:
     The workspace file path.
   '''
-  file = 'WORKSPACE'
+  file = 'BUILD'
 
   w = workspace(cwd)
   for f in os.listdir(w):

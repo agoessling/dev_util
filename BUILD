@@ -60,6 +60,15 @@ py_library(
     ],
 )
 
+py_library(
+    name = "dev_util",
+    srcs = ["dev_util.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":git_util",
+    ],
+)
+
 py_binary(
     name = "gen_compile_commands",
     srcs = ["gen_compile_commands.py"],
@@ -76,5 +85,15 @@ py_binary(
     deps = [
         ":bazel_util",
         ":git_util",
+    ],
+)
+
+py_binary(
+    name = "run_all",
+    srcs = ["run_all.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":gen_compile_commands",
+        ":gen_pyright_config",
     ],
 )
