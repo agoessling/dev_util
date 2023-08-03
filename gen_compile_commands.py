@@ -93,9 +93,9 @@ def main():
     subprocess.run(['bazel', 'run', ':refresh_compile_commands'], cwd=args.dir, check=True)
 
   if not args.no_ignore:
-    git_util.add_to_exclude_file('compile_commands.json')
-    git_util.add_to_exclude_file('external')
-    git_util.add_to_exclude_file('.cache')
+    git_util.add_to_exclude_file('compile_commands.json', args.dir)
+    git_util.add_to_exclude_file('external', args.dir)
+    git_util.add_to_exclude_file('.cache', args.dir)
 
 
 if __name__ == '__main__':
