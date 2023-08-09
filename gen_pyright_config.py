@@ -17,6 +17,7 @@ def get_cquery():
 def format(target):
     if "PyInfo" not in providers(target):
         return []
+    return [x.path for x in providers(target)["PyInfo"].transitive_sources.to_list()]
     dep = providers(target)["PyInfo"].imports
     return dep.to_list()
 '''
@@ -43,6 +44,7 @@ def main():
       bazel_cmd = ['bazel', 'cquery', target, '--output', 'starlark', '--starlark:file', f.name]
       ret = subprocess.run(bazel_cmd, capture_output=True, check=True)
 
+      print(ret)
       matches = re.findall(r'"(\S+)"', ret.stdout.decode())
       deps.update(matches)
 
