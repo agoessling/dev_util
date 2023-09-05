@@ -48,6 +48,10 @@ def main():
 
   extra_paths = [os.path.join(output_base, 'external', x) for x in deps]
 
+  # Add bazel-bin directory to capture generated python files.
+  ret = subprocess.run(['bazel', 'info', 'bazel-bin'], capture_output=True, check=True)
+  extra_paths.append(ret.stdout.decode().strip())
+
   output = {
       'exclude': ['bazel-*/'],
       'extraPaths': extra_paths,
