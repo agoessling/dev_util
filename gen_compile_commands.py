@@ -83,6 +83,8 @@ def main():
   # Only add arguments from config file that aren't specified on the command line.
   config = dev_util.find_config(args.dir)
   if config is not None and 'compile_commands' in config:
+    print('Loading configuration from dev_util.json...\n')
+
     for k, v in config['compile_commands'].items():
       if k not in args.__dict__ or args.__dict__[k] is None:
         args.__dict__[k] = v
